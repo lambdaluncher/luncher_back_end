@@ -12,9 +12,9 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
-// server.use('/admins', adminsRouter);
-// server.use('/donors', donorsRouter);
-// server.use('/schools', schoolsRouter);
+server.use('/admins', adminsRouter);
+server.use('/donors', donorsRouter);
+server.use('/schools', schoolsRouter);
 
 server.listen(PORT, err => {
     console.log(`Server is running on port ${PORT}`);
