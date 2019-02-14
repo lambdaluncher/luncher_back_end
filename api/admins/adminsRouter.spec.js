@@ -48,24 +48,24 @@ describe('The Admins route handlers', () => {
         });
     });
 
-    describe('post /', () => {
+    describe('post /admins/register', () => {
         it('responds with status code 201', async () => {
             const body = { username: 'BennyBeneficiary', password: 'BennyPassword'}
-            const response = await request(server).post('/admins').send(body);
+            const response = await request(server).post('/admins/register').send(body);
 
             expect(response.status).toBe(201);
         });
 
         it('responds with status code 422 when body is missing required data', async () => {
             const body = { username: 'BennyBeneficiary' }
-            const response = await request(server).post('/admins').send(body);
+            const response = await request(server).post('/admins/register').send(body);
 
             expect(response.status).toBe(422);
         });
 
         it('responds with an array containing a new id', async () => {
             const body = { username: 'BennyBeneficiary', password: 'BennyPassword'}
-            const response = await request(server).post('/admins').send(body);
+            const response = await request(server).post('/admins/register').send(body);
 
             expect(response.body).toEqual([1]);
         });

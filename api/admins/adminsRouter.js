@@ -1,8 +1,10 @@
 const express = require('express');
-
-const adminsRouter = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const db = require('./adminsHelpers.js');
+
+const adminsRouter = express.Router();
 
 adminsRouter.get('/', async (req, res) => {
     const rows = await db.getAll();
@@ -26,7 +28,7 @@ adminsRouter.get('/:id', async (req, res) => {
     }
 });
 
-adminsRouter.post('/', async (req, res) => {
+adminsRouter.post('/register', async (req, res) => {
     const newAdmin = req.body;
     if (newAdmin.username && newAdmin.password) {
         const ids = await db.addAdmin(newAdmin);
