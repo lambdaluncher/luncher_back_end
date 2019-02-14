@@ -1,7 +1,14 @@
-require('dotenv').config();
-
 const express = require('express');
 
-const router = express.Router();
+const adminsRouter = express.Router();
 
-module.exports = router;
+const db = require('./adminsHelpers.js');
+
+adminsRouter.get('/', async (req, res) => {
+    const rows = await db.getAll();
+    res
+        .status(200)
+        .json(rows);
+});
+
+module.exports = adminsRouter;

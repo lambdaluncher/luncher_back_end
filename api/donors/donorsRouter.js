@@ -1,7 +1,14 @@
-require('dotenv').config();
-
 const express = require('express');
 
-const router = express.Router();
+const donorsRouter = express.Router();
 
-module.exports = router;
+const db = require('./donorsHelpers.js');
+
+donorsRouter.get('/', async (req, res) => {
+    const rows = await db.getAll();
+    res
+        .status(200)
+        .json(rows);
+});
+
+module.exports = donorsRouter;

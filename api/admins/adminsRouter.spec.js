@@ -1,6 +1,7 @@
 const request = require('supertest');
-const admins = require('./adminsRouter.js');
+const server = require('../../index.js');
 const db = require('../../data/dbConfig.js');
+const express = require('express');
 
 describe('The Admins route handlers', () => {
     afterEach(async () => {
@@ -9,19 +10,19 @@ describe('The Admins route handlers', () => {
 
     describe('get /', () => {
         it('responds with status code 200', async () => {
-            const response = await request(admins).get('/');
+            const response = await request(server).get('/admins');
 
             expect(response.status).toBe(200);
         });
 
         it('responds with json type', async () => {
-            const response = await request(admins).get('/');
+            const response = await request(server).get('/admins');
 
             expect(response.type).toMatch(/json/i);
         });
 
-        it('sends correct response object', async () => {
-            const response = await request(admins).get('/');
+        it('sends empty array by default', async () => {
+            const response = await request(server).get('/admins');
 
             expect(response.body).toEqual([]);
         });
