@@ -42,16 +42,42 @@ adminsRouter.get('/:id', async (req, res) => {
 
 adminsRouter.post('/register', async (req, res) => {
     const newAdmin = req.body;
+    const hash = bcrypt.hashSync(newAdmin.password, 14);
+    newAdmin.password = hash;
     if (newAdmin.username && newAdmin.password) {
         const ids = await db.addAdmin(newAdmin);
-        res
-            .status(201)
-            .json(ids);
+        if (ids) {
+            const id = ids[0];
+            const admin = await db.getAdminById(id)
+            if (admin) {
+                const token = generateToken(admin);
+                if (token) {
+                    res
+                        .status(201)
+                        .send(token);
+                }
+                else {
+                    res
+                        .status(500)
+                        .json({message: 'Error generating token. The Admin could not be added at this time.'});
+                }
+            }
+            else {
+                res
+                    .status(500)
+                    .json({message: 'Error finding Admin in database. The Admin could not be added at this time.'}); 
+            }    
+        }
+        else {
+            res
+                .status(500)
+                .json({message: 'Error adding Admin to database. The Admin could not be added at this time.'});
+        }
     }
     else {
         res
             .status(422)
-            .json({ message: 'missing username or password'});
+            .json({ message: 'Missing username or password.'});
     }
 });
 
