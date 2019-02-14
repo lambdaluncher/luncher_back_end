@@ -14,3 +14,8 @@ async function addAdmin(newAdmin) {
     return db('admins')
         .insert(newAdmin);
 };
+
+async function getAdminById(id) {
+    return db('admins')
+        .where('id', Number(id));
+};
