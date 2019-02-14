@@ -4,7 +4,7 @@ module.exports = {
     getAll,
     addAdmin,
     getAdminById,
-    checkForDupe
+    checkForUsername
 };
 
 async function getAll() {
@@ -21,8 +21,7 @@ async function getAdminById(id) {
         .where('id', Number(id));
 };
 
-async function checkForDupe(newAdmin) {
+async function checkForUsername(newAdmin) {
     return db('admins')
         .where('username', newAdmin.username)
-        .select('id');
 }

@@ -43,7 +43,7 @@ adminsRouter.get('/:id', async (req, res) => {
 adminsRouter.post('/register', async (req, res) => {
     const newAdmin = req.body;
     if (newAdmin.username && newAdmin.password) {
-        const dupeUsername = await db.checkForDupe(newAdmin);
+        const dupeUsername = await db.checkForUsername(newAdmin);
         if (dupeUsername.length > 0) {
             res
                 .status(422)
@@ -89,6 +89,34 @@ adminsRouter.post('/register', async (req, res) => {
     }
 });
 
+adminsRouter.post('/login', async (req, res) => {
+    const creds = req.body;
+    if (creds.username && creds.password) {
+        const admin = await db.checkForUsername(creds);
+        if (admin.length > 0) {
+            if (bcrypt.compareSync(creds.password, admin[0].password)) {
+                const token = generateToken(admin);
+                res
+                    .send(token);
+            }
+            else {
+                res
+                    .status(401)
+                    .json({message: 'Incorrect username or password.'});
+            }
+        }
+        else {
+            res
+                .status(401)
+                .json({message: 'Incorrect username or password.'});
+        }
+    }
+    else {
+        res
+            .status(422)
+            .json({ message: 'Missing username or password.' });
+    }
+});
 
 
 module.exports = adminsRouter;
