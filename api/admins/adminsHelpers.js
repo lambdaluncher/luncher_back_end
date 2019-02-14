@@ -3,7 +3,8 @@ const db = require('../../data/dbConfig.js');
 module.exports = {
     getAll,
     addAdmin,
-    getAdminById
+    getAdminById,
+    checkForDupe
 };
 
 async function getAll() {
@@ -19,3 +20,9 @@ async function getAdminById(id) {
     return db('admins')
         .where('id', Number(id));
 };
+
+async function checkForDupe(newAdmin) {
+    return db('admins')
+        .where('username', newAdmin.username)
+        .select('id');
+}
