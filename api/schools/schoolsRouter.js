@@ -59,17 +59,31 @@ schoolsRouter.post('/', async (req, res) => {
 schoolsRouter.put('/:id', async (req, res) => {
     const { id } = req.params;
     const changes = req.body;
-    const updatedSchool = await db.updateSchool(id, changes);
-    if (updatedSchool) {
-        console.log(updatedSchool);
+    const schoolUpdated = await db.updateSchool(id, changes);
+    if (schoolUpdated) {
         res
             .status(201)
-            .json({ message: 'The school information was updated'});
+            .json({ message: 'The school information was updated.'});
     }
     else {
         res
             .status(500)
             .json({ message: 'Database error. The school information could not be updated at this time.'});
+    }
+});
+
+schoolsRouter.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    const schoolDeleted = await db.deleteSchool(id);
+    if (schoolDeleted) {
+        res
+            .status(202)
+            .json({ message: 'The school information was deleted.'});
+    }
+    else {
+        res
+            .status(500)
+            .json({ message: 'The school information could not be deleted at this time.'});
     }
 });
 
