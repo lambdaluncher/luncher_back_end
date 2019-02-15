@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+.env.test
+
+#DS store file
+.DS_Store
