@@ -28,15 +28,15 @@ adminsRouter.get('/', async (req, res) => {
 adminsRouter.get('/:id', async (req, res) => {
     const { id } = req.params;
     const admin = await db.getAdminById(id);
-    if (admin) {
+    if (admin.length > 0) {
         res
             .status(200)
-            .json(admin);
+            .json(admin[0]);
     }
     else {
         res
             .status(404)
-            .json({ message: 'not found' });
+            .json({ message: 'Not found.' });
     }
 });
 

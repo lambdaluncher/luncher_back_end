@@ -5,7 +5,8 @@ module.exports = {
     addSchool,
     getSchoolById,
     updateSchool,
-    deleteSchool
+    deleteSchool,
+    checkForSchoolName
 }
 
 async function getAll() {
@@ -16,6 +17,19 @@ async function addSchool(newSchool) {
     return db('schools')
         .insert(newSchool);
 };
+
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
+
+async function checkForSchoolName(newSchool) {
+    return db('schools')
+        .where('schoolName', newSchool.schoolName);
+}
 
 async function getSchoolById(id) {
     return db('schools')
