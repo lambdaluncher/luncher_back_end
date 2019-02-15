@@ -41,10 +41,9 @@ module.exports = {
     }
   },
 
-  // add this configuration to project
   production: {
-    client: 'pg', //yarn add pg (for postgress)
-    connection: dbConnection, //object or a string
+    client: 'pg', 
+    connection: dbConnection, 
     pool: {
       min: 2,
       max: 10
