@@ -63,10 +63,36 @@ describe('The Admins route handlers', () => {
             expect(response.status).toBe(422);
         });
 
-        it('responds with an array containing a new id', async () => {
+        it('responds with status code 422 when username already exists in database', async () => {
+
+        });
+
+        it('responds with a token', async () => {
             const response = await request(server).post('/admins/register').send({username: 'username', password: 'password'});
 
-            expect(response.body).toEqual([1]);
+            expect(response).toEqual([1]);
+        });
+    });
+
+    describe('post /admins/login', () => {
+        it('responds with status code 201', async () => {
+
+        });
+
+        it('responds with status code 422 when body is missing', async () => {
+
+        });
+
+        it('responds with status code 401 when username is incorrect', async () => {
+
+        });
+
+        it('responds with status code 401 when password is incorrect', async () => {
+
+        });
+
+        it('sends a token', async () => {
+
         });
     });
 });

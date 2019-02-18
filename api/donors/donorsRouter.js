@@ -97,6 +97,7 @@ donorsRouter.post('/login', async (req, res) => {
             if (bcrypt.compareSync(creds.password, donor[0].password)) {
                 const token = generateToken(donor);
                 res
+                    .status(201)
                     .send(token);
             }
             else {

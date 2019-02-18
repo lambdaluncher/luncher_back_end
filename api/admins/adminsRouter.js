@@ -97,6 +97,7 @@ adminsRouter.post('/login', async (req, res) => {
             if (bcrypt.compareSync(creds.password, admin[0].password)) {
                 const token = generateToken(admin);
                 res
+                    .status(201)
                     .send(token);
             }
             else {
