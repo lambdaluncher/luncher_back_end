@@ -5,5 +5,5 @@ node_modules/
 .env
 .env.test
 
-#DS store file
+# DS store file
 .DS_Store

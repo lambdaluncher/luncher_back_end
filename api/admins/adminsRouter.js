@@ -61,7 +61,7 @@ adminsRouter.post('/register', async (req, res) => {
                     if (token) {
                         res
                             .status(201)
-                            .send(token);
+                            .send({ token });
                     }
                     else {
                         res
@@ -98,7 +98,7 @@ adminsRouter.post('/login', async (req, res) => {
                 const token = generateToken(admin);
                 res
                     .status(201)
-                    .send(token);
+                    .send({ token });
             }
             else {
                 res

@@ -6,9 +6,16 @@ const schoolsRouter = express.Router();
 
 schoolsRouter.get('/', async (req, res) => {
     const rows = await db.getAll();
-    res
-        .status(200)
-        .json(rows);
+    if (rows.length > 0) {
+        res
+            .status(200)
+            .json(rows);
+    }
+    else {
+        res
+            .status(500)
+            .json({message: 'There was an error retrieving the schools data.'})
+    }
 });
 
 schoolsRouter.get('/:id', async (req, res) => {
@@ -32,7 +39,7 @@ schoolsRouter.post('/', async (req, res) => {
         const dupeSchoolName = await db.checkForSchoolName(newSchool);
         if (dupeSchoolName.length > 0) {
             res
-                .status(422)
+                .status(400)
                 .json({message: 'School name already exists.'});
         }
         else {
@@ -63,7 +70,7 @@ schoolsRouter.put('/:id', async (req, res) => {
     if (schoolUpdated) {
         res
             .status(201)
-            .json({ message: 'The school information was updated.'});
+            .json({ message: 'The school was successfully updated.'});
     }
     else {
         res

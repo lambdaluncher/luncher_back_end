@@ -61,7 +61,7 @@ donorsRouter.post('/register', async (req, res) => {
                     if (token) {
                         res
                             .status(201)
-                            .send(token);
+                            .send({ token });
                     }
                     else {
                         res
@@ -98,7 +98,7 @@ donorsRouter.post('/login', async (req, res) => {
                 const token = generateToken(donor);
                 res
                     .status(201)
-                    .send(token);
+                    .send({ token });
             }
             else {
                 res
