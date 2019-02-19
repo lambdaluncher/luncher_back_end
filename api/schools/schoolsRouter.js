@@ -1,10 +1,11 @@
 const express = require('express');
 
 const db = require('./schoolsHelpers.js');
+const { protect } = require('../../auth/authenticate.js');
 
 const schoolsRouter = express.Router();
 
-schoolsRouter.get('/', async (req, res) => {
+schoolsRouter.get('/', protect, async (req, res) => {
     const rows = await db.getAll();
     if (rows.length > 0) {
         res
@@ -18,7 +19,7 @@ schoolsRouter.get('/', async (req, res) => {
     }
 });
 
-schoolsRouter.get('/:id', async (req, res) => {
+schoolsRouter.get('/:id', protect, async (req, res) => {
     const { id } = req.params;
     const school = await db.getSchoolById(id);
     if (school.length > 0) {
@@ -33,7 +34,7 @@ schoolsRouter.get('/:id', async (req, res) => {
     }
 });
 
-schoolsRouter.post('/', async (req, res) => {
+schoolsRouter.post('/', protect, async (req, res) => {
     const newSchool = req.body;
     if (newSchool.schoolName) {
         const dupeSchoolName = await db.checkForSchoolName(newSchool);
@@ -63,7 +64,7 @@ schoolsRouter.post('/', async (req, res) => {
     }
 });
 
-schoolsRouter.put('/:id', async (req, res) => {
+schoolsRouter.put('/:id', protect, async (req, res) => {
     const { id } = req.params;
     const changes = req.body;
     const schoolUpdated = await db.updateSchool(id, changes);
@@ -79,7 +80,7 @@ schoolsRouter.put('/:id', async (req, res) => {
     }
 });
 
-schoolsRouter.delete('/:id', async (req, res) => {
+schoolsRouter.delete('/:id', protect, async (req, res) => {
     const { id } = req.params;
     const schoolDeleted = await db.deleteSchool(id);
     if (schoolDeleted) {
