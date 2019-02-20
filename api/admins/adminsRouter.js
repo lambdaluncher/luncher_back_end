@@ -61,7 +61,7 @@ adminsRouter.post('/register', async (req, res) => {
                     if (token) {
                         res
                             .status(201)
-                            .send(token);
+                            .send({ token });
                     }
                     else {
                         res
@@ -97,7 +97,8 @@ adminsRouter.post('/login', async (req, res) => {
             if (bcrypt.compareSync(creds.password, admin[0].password)) {
                 const token = generateToken(admin);
                 res
-                    .send(token);
+                    .status(201)
+                    .send({ token });
             }
             else {
                 res

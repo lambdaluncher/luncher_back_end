@@ -1,17 +1,25 @@
 const express = require('express');
 
 const db = require('./schoolsHelpers.js');
+const { protect } = require('../../auth/authenticate.js');
 
 const schoolsRouter = express.Router();
 
-schoolsRouter.get('/', async (req, res) => {
+schoolsRouter.get('/', protect, async (req, res) => {
     const rows = await db.getAll();
-    res
-        .status(200)
-        .json(rows);
+    if (rows.length > 0) {
+        res
+            .status(200)
+            .json(rows);
+    }
+    else {
+        res
+            .status(500)
+            .json({message: 'There was an error retrieving the schools data.'})
+    }
 });
 
-schoolsRouter.get('/:id', async (req, res) => {
+schoolsRouter.get('/:id', protect, async (req, res) => {
     const { id } = req.params;
     const school = await db.getSchoolById(id);
     if (school.length > 0) {
@@ -26,13 +34,13 @@ schoolsRouter.get('/:id', async (req, res) => {
     }
 });
 
-schoolsRouter.post('/', async (req, res) => {
+schoolsRouter.post('/', protect, async (req, res) => {
     const newSchool = req.body;
     if (newSchool.schoolName) {
         const dupeSchoolName = await db.checkForSchoolName(newSchool);
         if (dupeSchoolName.length > 0) {
             res
-                .status(422)
+                .status(400)
                 .json({message: 'School name already exists.'});
         }
         else {
@@ -53,6 +61,37 @@ schoolsRouter.post('/', async (req, res) => {
         res
             .status(422)
             .json({ message: 'Please provide the school name.'})
+    }
+});
+
+schoolsRouter.put('/:id', protect, async (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    const schoolUpdated = await db.updateSchool(id, changes);
+    if (schoolUpdated) {
+        res
+            .status(201)
+            .json({ message: 'The school was successfully updated.'});
+    }
+    else {
+        res
+            .status(500)
+            .json({ message: 'Database error. The school information could not be updated at this time.'});
+    }
+});
+
+schoolsRouter.delete('/:id', protect, async (req, res) => {
+    const { id } = req.params;
+    const schoolDeleted = await db.deleteSchool(id);
+    if (schoolDeleted) {
+        res
+            .status(202)
+            .json({ message: 'The school information was deleted.'});
+    }
+    else {
+        res
+            .status(500)
+            .json({ message: 'The school information could not be deleted at this time.'});
     }
 });
 

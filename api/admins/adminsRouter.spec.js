@@ -29,45 +29,70 @@ describe('The Admins route handlers', () => {
 
     describe('get /:id', () => {
         it('responds with status code 200', async () => {
+            await request(server).post('/admins/register').send({username: 'username', password: 'password'});
             const response = await request(server).get('/admins/1');
 
             expect(response.status).toBe(200);
         });
 
         it('responds with json type', async () => {
+            await request(server).post('/admins/register').send({username: 'username', password: 'password'});
             const response = await request(server).get('/admins/1');
 
             expect(response.type).toMatch(/json/i);
         });
 
         it('sends one admin by default', async () => {
-            request(server)
+            await request(server).post('/admins/register').send({username: 'username', password: 'password'});
             const response = await request(server).get('/admins/1');
 
-            expect(response.body).toEqual([]);
+            expect(response.body).toEqual( {"email": null, "firstName": null, "id": 1, "lastName": null, "password": "$2a$14$qoISKfveO9.FhKbCkSm9Jew370wn3aSTkwDl2C0uP9UZEYPiSVRDy", "type": null, "username": "username",});
         });
     });
 
     describe('post /admins/register', () => {
         it('responds with status code 201', async () => {
-            const body = { username: 'BennyBeneficiary', password: 'BennyPassword'}
-            const response = await request(server).post('/admins/register').send(body);
+            const response = await request(server).post('/admins/register').send({username: 'username', password: 'password'});
 
             expect(response.status).toBe(201);
         });
 
         it('responds with status code 422 when body is missing required data', async () => {
-            const body = { username: 'BennyBeneficiary' }
-            const response = await request(server).post('/admins/register').send(body);
+            const response = await request(server).post('/admins/register').send({username: 'username'});
 
             expect(response.status).toBe(422);
         });
 
-        it('responds with an array containing a new id', async () => {
-            const body = { username: 'BennyBeneficiary', password: 'BennyPassword'}
-            const response = await request(server).post('/admins/register').send(body);
+        it('responds with status code 422 when username already exists in database', async () => {
 
-            expect(response.body).toEqual([1]);
+        });
+
+        it('responds with a token', async () => {
+            const response = await request(server).post('/admins/register').send({username: 'username', password: 'password'});
+
+            expect(response).toEqual([1]);
+        });
+    });
+
+    describe('post /admins/login', () => {
+        it('responds with status code 201', async () => {
+
+        });
+
+        it('responds with status code 422 when body is missing', async () => {
+
+        });
+
+        it('responds with status code 401 when username is incorrect', async () => {
+
+        });
+
+        it('responds with status code 401 when password is incorrect', async () => {
+
+        });
+
+        it('sends a token', async () => {
+
         });
     });
 });

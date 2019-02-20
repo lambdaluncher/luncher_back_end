@@ -18,14 +18,6 @@ async function addSchool(newSchool) {
         .insert(newSchool);
 };
 
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-// WRITE THE FUNCTION TO CHECK FOR SCHOOL NAME
-
 async function checkForSchoolName(newSchool) {
     return db('schools')
         .where('schoolName', newSchool.schoolName);
@@ -40,7 +32,7 @@ async function updateSchool(id, changes) {
     return db('schools')
         .where('id', Number(id))
         .update(changes)
-        .then(count => (count > 0 ? this.get(id) : null));
+
 }
 
 async function deleteSchool(id) {
