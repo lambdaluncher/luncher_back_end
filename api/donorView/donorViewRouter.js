@@ -14,7 +14,7 @@ donorViewRouter.get('/', async (req, res) => {
     else {
         res
             .status(500)
-            .json({message: 'There was an error retrieving the schools data.'})
+            .json({message: 'There was an error retrieving the schools data.'});
     }
 });
 
