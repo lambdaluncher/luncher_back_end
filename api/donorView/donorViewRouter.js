@@ -4,6 +4,8 @@ const db = require('./donorViewHelpers.js');
 
 const donorViewRouter = express.Router();
 
+// GET /donorView
+
 donorViewRouter.get('/', async (req, res) => {
     const rows = await db.getAll();
     if (rows.length > 0) {
