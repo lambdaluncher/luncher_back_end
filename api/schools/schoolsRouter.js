@@ -7,7 +7,7 @@ const schoolsRouter = express.Router();
 
 // in order to get GET /schools, need to send token to API
 
-schoolsRouter.get('/', protect, async (req, res) => {
+schoolsRouter.get('/', async (req, res) => {
     const rows = await db.getAll();
     if (rows.length > 0) {
         res
