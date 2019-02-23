@@ -40,6 +40,8 @@ adminsRouter.get('/:id', async (req, res) => {
     }
 });
 
+// POST /admins/register ==> API will return an object that looks like this { token: '$&^*&$^#*^&$&#' }
+
 adminsRouter.post('/register', async (req, res) => {
     const newAdmin = req.body;
     if (newAdmin.username && newAdmin.password) {
@@ -89,6 +91,9 @@ adminsRouter.post('/register', async (req, res) => {
     }
 });
 
+// POST /admins/login ==> API will return an object that looks like this { token: '$&^*&$^#*^&$&#' }
+
+
 adminsRouter.post('/login', async (req, res) => {
     const creds = req.body;
     if (creds.username && creds.password) {
@@ -119,5 +124,6 @@ adminsRouter.post('/login', async (req, res) => {
     }
 });
 
+const sampleBody = { username: 'username', password: 'password' };
 
 module.exports = adminsRouter;

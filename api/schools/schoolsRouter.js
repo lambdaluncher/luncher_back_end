@@ -5,7 +5,9 @@ const { protect } = require('../../auth/authenticate.js');
 
 const schoolsRouter = express.Router();
 
-schoolsRouter.get('/', protect, async (req, res) => {
+// in order to get GET /schools, need to send token to API
+
+schoolsRouter.get('/', async (req, res) => {
     const rows = await db.getAll();
     if (rows.length > 0) {
         res

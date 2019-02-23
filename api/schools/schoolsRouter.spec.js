@@ -2,24 +2,47 @@ const request = require('supertest');
 const server = require('../../index.js');
 const db = require('../../data/dbConfig.js');
 
+let token; 
+
 describe('The Schools route handlers', () => {
+    beforeAll(async () => {
+        const response = await request(server)
+            .post('/admins/register')
+            .send({ 
+                username: 'testusername',
+                password: 'password'
+            });
+    
+        token = response.body.token;
+        console.log(token);
+    });
+
+    beforeEach(async () => {
+        const response = await request(server)
+            .post('/admins/login')
+            .send({
+                username: 'testusername',
+                password: 'password'
+            });
+    });
+    
     afterEach(async () => {
         await db('schools').truncate();
     });
 
     describe('get /', () => {
         it('responds with status code 200', async () => {
+            const response = await request(server).get('/schools');
 
-        });
-        
-        it('responds with an array of schools', async () => {
-
+            expect(response.status).toBe(200);
         });
     });
 
     describe('get /:id', () => {
         it('responds with status code 200', async () => {
+            const response = await request(server).get('/schools/1').set('Authorization', token);
 
+            expect(response.status).toBe(200);
         });
 
         it('responds with status code 404 if the school does not exist', async () => {

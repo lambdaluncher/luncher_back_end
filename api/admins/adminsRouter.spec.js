@@ -46,7 +46,7 @@ describe('The Admins route handlers', () => {
             await request(server).post('/admins/register').send({username: 'username', password: 'password'});
             const response = await request(server).get('/admins/1');
 
-            expect(response.body).toEqual( {"email": null, "firstName": null, "id": 1, "lastName": null, "password": "$2a$14$qoISKfveO9.FhKbCkSm9Jew370wn3aSTkwDl2C0uP9UZEYPiSVRDy", "type": null, "username": "username",});
+            expect(response.body.id).toEqual(1)
         });
     });
 
@@ -70,29 +70,43 @@ describe('The Admins route handlers', () => {
         it('responds with a token', async () => {
             const response = await request(server).post('/admins/register').send({username: 'username', password: 'password'});
 
-            expect(response).toEqual([1]);
+            expect(response.body.token).toBeDefined();
         });
     });
 
     describe('post /admins/login', () => {
-        it('responds with status code 201', async () => {
+        beforeEach(async () => {
+            await request(server).post('/admins/register').send({username: 'username', password: 'password'});
+        });
 
+        it('responds with status code 201', async () => {
+            const response = await request(server).post('/admins/login').send({username: 'username', password: 'password'});
+
+            expect(response.status).toBe(201);
         });
 
         it('responds with status code 422 when body is missing', async () => {
+            const response = await request(server).post('/admins/login').send({username: 'username'});
 
+            expect(response.status).toBe(422);
         });
 
         it('responds with status code 401 when username is incorrect', async () => {
+            const response = await request(server).post('/admins/login').send({username: 'wrongUsername', password: 'password'});
 
+            expect(response.status).toBe(401);
         });
 
         it('responds with status code 401 when password is incorrect', async () => {
+            const response = await request(server).post('/admins/login').send({username: 'username', password: 'wrongPassword'});
 
+            expect(response.status).toBe(401);
         });
 
         it('sends a token', async () => {
+            const response = await request(server).post('/admins/login').send({username: 'username', password: 'password'});
 
+            expect(response.body.token).toBeDefined();
         });
     });
 });
