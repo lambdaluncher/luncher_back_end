@@ -4,18 +4,16 @@ const db = require('../../data/dbConfig.js');
 
 let token; 
 
+beforeAll(async () => {
+    const response = await request(server)
+        .post('/admins/register')
+        .send({ 
+            username: 'testusername',
+            password: 'password'
+        });
+});
+
 describe('The Schools route handlers', () => {
-    beforeAll(async () => {
-        const response = await request(server)
-            .post('/admins/register')
-            .send({ 
-                username: 'testusername',
-                password: 'password'
-            });
-    
-        token = response.body.token;
-        console.log(token);
-    });
 
     beforeEach(async () => {
         const response = await request(server)
@@ -24,6 +22,7 @@ describe('The Schools route handlers', () => {
                 username: 'testusername',
                 password: 'password'
             });
+        token = response.body.token;
     });
     
     afterEach(async () => {
@@ -32,6 +31,7 @@ describe('The Schools route handlers', () => {
 
     describe('get /', () => {
         it('responds with status code 200', async () => {
+            await request(server).post('/schools/').set('Authorization', token).send({schoolName: 'Supertest School'});
             const response = await request(server).get('/schools');
 
             expect(response.status).toBe(200);
@@ -40,49 +40,49 @@ describe('The Schools route handlers', () => {
 
     describe('get /:id', () => {
         it('responds with status code 200', async () => {
+            await request(server).post('/schools/').set('Authorization', token).send({schoolName: 'Supertest School'});
             const response = await request(server).get('/schools/1').set('Authorization', token);
 
             expect(response.status).toBe(200);
         });
 
         it('responds with status code 404 if the school does not exist', async () => {
+            const response = await request(server).get('/schools/99').set('Authorization', token);
 
-        });
-        
-        it('responds with a single school object', async () => {
-
+            expect(response.status).toBe(404);
         });
     });
 
     describe('post /', () => {
         it('responds with status code 201', async () => {
+            const response = await request(server).post('/schools/').set('Authorization', token).send({schoolName: 'Supertest School'});
 
-        });
-
-                
-        it('responds with an array containing an id', async () => {
-
-        });
-
-        it('responds with status code 400 if the schoolName already exists', async () => {
-
+            expect(response.status).toBe(201);
         });
 
         it('responds with status code 422 if the schoolName is not provided', async () => {
+            const response = await request(server).post('/schools/').set('Authorization', token).send({school: 'Supertest School'});
 
+            expect(response.status).toBe(422);
         });
 
     });
 
     describe('put /:id', () => {
         it('responds with status code 201', async () => {
+            await request(server).post('/schools/').set('Authorization', token).send({schoolName: 'Supertest School'});
+            const response = await request(server).put('/schools/1').set('Authorization', token).send({schoolName: 'Supertest School Updated'});
 
+            expect(response.status).toBe(201);
         });
     });
 
     describe('delete /:id', () => {
         it('responds with status code 202', async () => {
+            await request(server).post('/schools/').set('Authorization', token).send({schoolName: 'Supertest School'});
+            const response = await request(server).del('/schools/1').set('Authorization', token);
 
+            expect(response.status).toBe(202);
         });
     });
 })
