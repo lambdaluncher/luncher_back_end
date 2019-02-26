@@ -19,7 +19,7 @@ server.use('/donors', donorsRouter);
 server.use('/schools', schoolsRouter);
 server.use('/donorView', donorViewRouter);
 
-server.listen(port, err => {
+server.listen(, err => {
     console.log(`Server is running on port 4040`);
 });
 
