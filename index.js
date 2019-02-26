@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-
+const port = process.env.PORT
 const adminsRouter = require('./api/admins/adminsRouter.js');
 const donorsRouter = require('./api/donors/donorsRouter.js');
 const schoolsRouter = require('./api/schools/schoolsRouter.js');
@@ -19,6 +19,6 @@ server.use('/donors', donorsRouter);
 server.use('/schools', schoolsRouter);
 server.use('/donorView', donorViewRouter);
 
-server.listen( );
+server.listen(port);
 
 module.exports = server;
