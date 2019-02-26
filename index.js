@@ -8,7 +8,7 @@ const schoolsRouter = require('./api/schools/schoolsRouter.js');
 const donorViewRouter = require('./api/donorView/donorViewRouter.js');
 
 
-const port = 4040; 
+// const port = 4040; 
 const server = express();
 
 server.use(cors());
@@ -20,7 +20,7 @@ server.use('/schools', schoolsRouter);
 server.use('/donorView', donorViewRouter);
 
 server.listen(port, err => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port 4040`);
 });
 
 module.exports = server;
